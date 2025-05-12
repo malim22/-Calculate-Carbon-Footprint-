@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Carbon Footprint Result</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #f0fff0, #e0f7fa);
+      margin: 0;
+      padding: 0 20px;
+      color: #333;
+      animation: fadeInBody 1s ease-in forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeInBody {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-top: 30px;
+    }
+
+    .result-box {
+      background: #fff;
+      border-left: 6px solid #27ae60;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 600px;
+      font-size: 18px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      animation: slideFade 1s ease-in-out;
+    }
+
+    .category-box {
+      background: #ffffff;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 700px;
+      transition: transform 0.3s ease;
+    }
+
+    .category-box:hover {
+      transform: translateY(-5px);
+    }
+
+    .good { border-left: 6px solid #2ecc71; }
+    .moderate { border-left: 6px solid #f1c40f; }
+    .bad { border-left: 6px solid #e74c3c; }
+
+    .category-box h3 {
+      margin-top: 0;
+      color: #2c3e50;
+    }
+
+    ul {
+      margin: 10px 0 0 20px;
+      line-height: 1.6;
+    }
+
+    footer {
+      margin: 40px 0;
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+    }
+
+    a.back-link {
+      text-decoration: none;
+      color: #3498db;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    a.back-link:hover {
+      text-decoration: underline;
+      color: #2a80b9;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Your Carbon Footprint Result</h1>
+
+  <div class="result-box" id="result-display">Loading your result...</div>
+
+  <div id="feedback-container"></div>
+
+  <footer>
+    <a href="index.html" class="back-link">🔙 Recalculate</a>
+  </footer>
+
+  <script>
+    const total = parseFloat(localStorage.getItem("carbonFootprint")) || 0;
+    const energy = parseFloat(localStorage.getItem("energy")) || 0;
+    const transport = parseFloat(localStorage.getItem("transport")) || 0;
+    const waste = parseFloat(localStorage.getItem("waste")) || 0;
+    const diet = parseFloat(localStorage.getItem("diet")) || 0;
+
+    document.getElementById("result-display").innerHTML =
+      `<strong>Your total estimated carbon footprint is:</strong> ${total.toFixed(2)} g CO2e`;
+
+    const feedbackContainer = document.getElementById("feedback-container");
+
+    function getFeedback(title, value, low, high, tips) {
+      let level = "";
+      let description = "";
+
+      if (value <= low) {
+        level = "good";
+        description = "✅ Great job! Your carbon output in this area is low.";
+      } else if (value <= high) {
+        level = "moderate";
+        description = "⚠️ This is moderate. Try to improve it using these tips.";
+      } else {
+        level = "bad";
+        description = "❌ High impact! You should seriously consider these tips.";
+      }
+
+      return `
+        <div class="category-box ${level}">
+          <h3>${title}: ${value.toFixed(2)} g CO2e</h3>
+          <p>${description}</p>
+          <ul>${tips.map(t => `<li>${t}</li>`).join("")}</ul>
+        </div>
+      `;
+    }
+
+    feedbackContainer.innerHTML =
+      getFeedback("⚡ Energy Consumption", energy, 100, 300, [
+        "Switch off devices when not in use",
+        "Use energy-efficient appliances",
+        "Opt for renewable sources if possible"
+      ]) +
+      getFeedback("🚗 Transportation", transport, 200, 500, [
+        "Use public transport or cycle",
+        "Carpool with others",
+        "Avoid unnecessary travel"
+      ]) +
+      getFeedback("🍴 Diet", diet, 200, 500, [
+        "Eat more plant-based foods",
+        "Reduce red meat consumption",
+        "Support local food sources"
+      ]) +
+      getFeedback("🗑️ Waste Management", waste, 150, 400, [
+        "Reduce plastic use",
+        "Recycle and compost",
+        "Avoid disposable products"
+      ]);
+  </script>
+
+</body>
+</html>

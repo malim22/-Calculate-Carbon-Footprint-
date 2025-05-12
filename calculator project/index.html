@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Carbon Footprint Calculator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #f0fff0, #e0f7fa);
+      margin: 0;
+      padding: 0 20px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 30px 0 20px;
+      color: #2c3e50;
+      font-size: 2rem;
+    }
+
+    main {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    section {
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 18px;
+      color: #27ae60;
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    #calculate-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #27ae60;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    #calculate-btn:hover {
+      background-color: #219150;
+    }
+
+    #result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #eafaf1;
+      border-left: 5px solid #27ae60;
+      display: none;
+      font-size: 16px;
+    }
+
+    footer {
+      text-align: center;
+      margin: 40px 0;
+      font-size: 14px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Carbon Footprint Calculator</h1>
+
+  <main>
+    <section>
+      <h2>Energy Consumption</h2>
+      <label for="energy-input">Enter your energy consumption in kWh:</label>
+      <input type="number" id="energy-input" />
+    </section>
+
+    <section>
+      <h2>Transportation</h2>
+      <label for="transportation-input">Enter your transportation emission in g CO2e:</label>
+      <input type="number" id="transportation-input" />
+    </section>
+
+    <section>
+      <h2>Waste Management</h2>
+      <label for="waste-input">Enter your waste emission in g CO2e:</label>
+      <input type="number" id="waste-input" />
+    </section>
+
+    <section>
+      <h2>Diet</h2>
+      <label for="diet-input">Enter your diet emission in g CO2e:</label>
+      <input type="number" id="diet-input" />
+    </section>
+
+    <button id="calculate-btn">Calculate Carbon Footprint</button>
+
+    <div id="result"></div>
+  </main>
+
+  <footer>
+    © 2025 Carbon Tracker Project
+  </footer>
+
+  <script>
+    document.getElementById("calculate-btn").addEventListener("click", function () {
+      const energy = parseFloat(document.getElementById("energy-input").value) || 0;
+      const transport = parseFloat(document.getElementById("transportation-input").value) || 0;
+      const waste = parseFloat(document.getElementById("waste-input").value) || 0;
+      const diet = parseFloat(document.getElementById("diet-input").value) || 0;
+
+      const total = energy + transport + waste + diet;
+
+      // Save result and redirect
+      localStorage.setItem("carbonFootprint", total.toFixed(2));
+      localStorage.setItem("energy", energy)
+      localStorage.setItem("transport", transport)
+      localStorage.setItem("waste", waste)
+      localStorage.setItem("diet", diet);
+
+      window.location.href = "result.html";
+    });
+  </script>
+
+</body>
+</html>
